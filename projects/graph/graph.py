@@ -8,6 +8,8 @@ class Graph:
 	"""Represent a graph as a dictionary of vertices mapping labels to edges."""
 	def __init__(self):
 		self.vertices = {}
+		self.dft_checked = {}
+		self.dfs_checked = {}
 
 	def add_vertex(self, vertex_id):
 		"""
@@ -69,15 +71,38 @@ class Graph:
 
 		This should be done using recursion.
 		"""
-		pass
-		# visited = set()
-		# visited.add(starting_vertex)
-		# # print(starting_vertex)
-		# for n in self.get_neighbors(starting_vertex):
-		# 	if starting_vertex not in self.get_neighbors(n):
+
+		if starting_vertex in self.dft_checked:
+			return
+		print(starting_vertex)
+		self.dft_checked[starting_vertex] = 'checked'
+		for n in self.vertices[starting_vertex]:
+			self.dft_recursive(n)
+
+		# if 'checked' in self.vertices[starting_vertex]:
+		# 	return
+		# elif starting_vertex == 7:
+		# 	print(starting_vertex)
+		# 	for key, value in self.vertices.items():
+		# 		if 'checked' in value:
+		# 			value.remove('checked')
+		# 	return
+		# else:
+		# 	print(starting_vertex)
+		# 	self.vertices[starting_vertex].add('checked')
+		# 	for n in self.vertices[starting_vertex]:
+		# 		if n != 'checked':
+		# 			self.dft_recursive(n)
+
+		# if 'checked' in self.vertices[starting_vertex]:
+		# 	print('fuck')
+		# 	return
+		# else:
+		# 	# self.vertices[starting_vertex] = [self.vertices[starting_vertex]].append('checked')
+		# 	self.vertices[starting_vertex].add('checked')
+		# 	print(starting_vertex)
+		# 	for n in self.vertices[starting_vertex]:
 		# 		self.dft_recursive(n)
-		# 	else:
-		# 		visited.add(n)
 
 	def bfs(self, starting_vertex, destination_vertex):
 		"""
@@ -189,6 +214,8 @@ if __name__ == '__main__':
 	print('---------------')
 
 	graph.dft_recursive(1)
+
+	print('---------------')
 
 	'''
 	Valid BFS path:
