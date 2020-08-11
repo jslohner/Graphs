@@ -8,10 +8,9 @@ class Graph:
 	"""Represent a graph as a dictionary of vertices mapping labels to edges."""
 	def __init__(self):
 		self.vertices = {}
-		self.dft_checked = set()
-		self.dfs_checked = set()
-		# self.dfs_paths = Stack()
-		self.dfs_paths = {}
+		# self.dft_checked = set()
+		# self.dfs_checked = set()
+		# self.dfs_paths = {}
 
 	def add_vertex(self, vertex_id):
 		"""
@@ -66,44 +65,29 @@ class Graph:
 				for n in self.get_neighbors(v):
 					s.push(n)
 
-	def dft_recursive(self, starting_vertex):
+	def dft_recursive(self, starting_vertex, checked=None):
 		"""
 		Print each vertex in depth-first order
 		beginning from starting_vertex.
 
 		This should be done using recursion.
 		"""
-
-		if starting_vertex in self.dft_checked:
-			return
+		# lecture solution
+		if checked is None:
+			checked = set()
+		checked.add(starting_vertex)
 		print(starting_vertex)
-		self.dft_checked.add(starting_vertex)
-		for n in self.get_neighbors(starting_vertex):
-			self.dft_recursive(n)
+		for n in self.vertices[starting_vertex]:
+			if n not in checked:
+				self.dft_recursive(n, checked)
 
-		# if 'checked' in self.vertices[starting_vertex]:
+		# original solution
+		# if starting_vertex in self.dft_checked:
 		# 	return
-		# elif starting_vertex == 7:
-		# 	print(starting_vertex)
-		# 	for key, value in self.vertices.items():
-		# 		if 'checked' in value:
-		# 			value.remove('checked')
-		# 	return
-		# else:
-		# 	print(starting_vertex)
-		# 	self.vertices[starting_vertex].add('checked')
-		# 	for n in self.vertices[starting_vertex]:
-		# 		if n != 'checked':
-		# 			self.dft_recursive(n)
-
-		# if 'checked' in self.vertices[starting_vertex]:
-		# 	return
-		# else:
-		# 	# self.vertices[starting_vertex] = [self.vertices[starting_vertex]].append('checked')
-		# 	self.vertices[starting_vertex].add('checked')
-		# 	print(starting_vertex)
-		# 	for n in self.vertices[starting_vertex]:
-		# 		self.dft_recursive(n)
+		# print(starting_vertex)
+		# self.dft_checked.add(starting_vertex)
+		# for n in self.get_neighbors(starting_vertex):
+		# 	self.dft_recursive(n)
 
 	def bfs(self, starting_vertex, destination_vertex):
 		"""
@@ -147,7 +131,7 @@ class Graph:
 					copy.append(n)
 					s.push(copy)
 
-	def dfs_recursive(self, starting_vertex, destination_vertex):
+	def dfs_recursive(self, starting_vertex, destination_vertex, checked=None, path=None):
 		"""
 		Return a list containing a path from
 		starting_vertex to destination_vertex in
@@ -155,23 +139,40 @@ class Graph:
 
 		This should be done using recursion.
 		"""
-		if destination_vertex in self.dfs_paths:
-			return self.dfs_paths[destination_vertex]
-		if len(self.dfs_paths) > 0:
-			p = self.dfs_paths[starting_vertex]
-			v = p[-1]
-			if v not in self.dfs_checked:
-				if (v == destination_vertex):
-					return p
-				self.dfs_checked.add(v)
-				for n in self.get_neighbors(v):
-					copy = p[:]
-					copy.append(n)
-					self.dfs_paths[n] = copy
-				return self.dfs_recursive(n, destination_vertex)
-		else:
-			self.dfs_paths[starting_vertex] = [starting_vertex]
-			return self.dfs_recursive(starting_vertex, destination_vertex)
+		# lecture solution
+		if checked is None:
+			checked = set()
+		if path is None:
+			path = []
+		checked.add(starting_vertex)
+		path = path + [starting_vertex]
+		if starting_vertex == destination_vertex:
+			return path
+		for n in self.get_neighbors(starting_vertex):
+			if n not in checked:
+				ans = self.dfs_recursive(n, destination_vertex, checked, path)
+				if ans is not None:
+					return ans
+		return None
+
+		# original solution
+		# if destination_vertex in self.dfs_paths:
+		# 	return self.dfs_paths[destination_vertex]
+		# if len(self.dfs_paths) > 0:
+		# 	p = self.dfs_paths[starting_vertex]
+		# 	v = p[-1]
+		# 	if v not in self.dfs_checked:
+		# 		if (v == destination_vertex):
+		# 			return p
+		# 		self.dfs_checked.add(v)
+		# 		for n in self.get_neighbors(v):
+		# 			copy = p[:]
+		# 			copy.append(n)
+		# 			self.dfs_paths[n] = copy
+		# 		return self.dfs_recursive(n, destination_vertex)
+		# else:
+		# 	self.dfs_paths[starting_vertex] = [starting_vertex]
+		# 	return self.dfs_recursive(starting_vertex, destination_vertex)
 
 if __name__ == '__main__':
 	graph = Graph()  # Instantiate your graph
