@@ -8,8 +8,10 @@ class Graph:
 	"""Represent a graph as a dictionary of vertices mapping labels to edges."""
 	def __init__(self):
 		self.vertices = {}
-		self.dft_checked = {}
-		self.dfs_checked = {}
+		self.dft_checked = set()
+		self.dfs_checked = set()
+		# self.dfs_paths = Stack()
+		self.dfs_paths = {}
 
 	def add_vertex(self, vertex_id):
 		"""
@@ -75,8 +77,8 @@ class Graph:
 		if starting_vertex in self.dft_checked:
 			return
 		print(starting_vertex)
-		self.dft_checked[starting_vertex] = 'checked'
-		for n in self.vertices[starting_vertex]:
+		self.dft_checked.add(starting_vertex)
+		for n in self.get_neighbors(starting_vertex):
 			self.dft_recursive(n)
 
 		# if 'checked' in self.vertices[starting_vertex]:
@@ -95,7 +97,6 @@ class Graph:
 		# 			self.dft_recursive(n)
 
 		# if 'checked' in self.vertices[starting_vertex]:
-		# 	print('fuck')
 		# 	return
 		# else:
 		# 	# self.vertices[starting_vertex] = [self.vertices[starting_vertex]].append('checked')
@@ -154,7 +155,23 @@ class Graph:
 
 		This should be done using recursion.
 		"""
-		pass  # TODO
+		if destination_vertex in self.dfs_paths:
+			return self.dfs_paths[destination_vertex]
+		if len(self.dfs_paths) > 0:
+			p = self.dfs_paths[starting_vertex]
+			v = p[-1]
+			if v not in self.dfs_checked:
+				if (v == destination_vertex):
+					return p
+				self.dfs_checked.add(v)
+				for n in self.get_neighbors(v):
+					copy = p[:]
+					copy.append(n)
+					self.dfs_paths[n] = copy
+				return self.dfs_recursive(n, destination_vertex)
+		else:
+			self.dfs_paths[starting_vertex] = [starting_vertex]
+			return self.dfs_recursive(starting_vertex, destination_vertex)
 
 if __name__ == '__main__':
 	graph = Graph()  # Instantiate your graph
