@@ -81,6 +81,16 @@ class Graph:
 			if n not in checked:
 				self.dft_recursive(n, checked)
 
+		# inner recursive function solution
+		# def dft_inner(v, checked):
+		# 	checked.add(v)
+		# 	print(v)
+		# 	for n in self.vertices[v]:
+		# 		if n not in checked:
+		# 			dft_inner(n, checked)
+		# checked = set()
+		# dft_inner(starting_vertex, checked)
+
 		# original solution
 		# if starting_vertex in self.dft_checked:
 		# 	return
@@ -154,6 +164,22 @@ class Graph:
 				if ans is not None:
 					return ans
 		return None
+
+		# inner recursive function solution
+		# def dfs_inner(sv, dv, checked, path):
+		# 	checked.add(sv)
+		# 	path = path + [sv]
+		# 	if sv == dv:
+		# 		return path
+		# 	for n in self.vertices[sv]:
+		# 		if n not in checked:
+		# 			ans = dfs_inner(n, dv, checked, path)
+		# 			if ans is not None:
+		# 				return ans
+		# 	return None
+		# checked = set()
+		# path = []
+		# return dfs_inner(starting_vertex, destination_vertex, checked, path)
 
 		# original solution
 		# if destination_vertex in self.dfs_paths:
