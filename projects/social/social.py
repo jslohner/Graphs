@@ -54,7 +54,7 @@ class SocialGraph:
 		# Create friendships
 		c_list = list(itertools.combinations(usr_nums, 2))
 		random.shuffle(c_list)
-		for i in range(0, (num_users)):
+		for i in range(0, ((num_users * avg_friendships) // 2)):
 			self.add_friendship(c_list[i][0], c_list[i][1])
 
 	def get_all_social_paths(self, user_id):
