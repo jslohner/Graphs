@@ -11,10 +11,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -38,23 +38,23 @@ for room in world.rooms:
 		'w': world.rooms[room].w_to.id if world.rooms[room].w_to else None,
 		'e': world.rooms[room].e_to.id if world.rooms[room].e_to else None
 	}
-# print(trav_graph)
+print(trav_graph)
 # ---
 q = []
 # q.append([world.starting_room])
-q.append([world.starting_room.id])
+q.append([(world.starting_room.id, 'start')])
 shortest_paths = {}
 while len(q) > 0:
 	p = q.pop(0)
-	room = p[-1]
+	room = p[-1][0]
+	if (room == None):
+		continue
 	if room not in shortest_paths:
-		if (room == None):
-			continue
 		shortest_paths[room] = p
 		for next_room in trav_graph[room]:
 			if next_room not in shortest_paths:
 				copy = p[:]
-				copy.append(trav_graph[room][next_room])
+				copy.append((trav_graph[room][next_room], next_room))
 				q.append(copy)
 print(shortest_paths)
 
@@ -74,6 +74,150 @@ print(shortest_paths)
 # 				new_path = list(path)
 # 				new_path.append(friend_id)
 # 				q.enqueue(new_path)
+# ---
+opp = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+direction_paths = {}
+for key in shortest_paths:
+	direction_paths[key] = [x[1] for x in shortest_paths[key]]
+print(direction_paths)
+
+for value in direction_paths.values():
+	path_back = []
+	for direction in value:
+		if direction != 'start':
+			traversal_path.append(direction)
+			path_back.insert(0, opp[direction])
+	traversal_path.extend(path_back)
+
+s = []
+s.append([0])
+dfs_paths = {}
+while len(s) > 0:
+	path = s.pop()
+	room_num = path[-1]
+	if room_num not in dfs_paths:
+		if (room_num == None):
+			continue
+		dfs_paths[room_num] = path
+		# print(room_num)
+		for next_room in trav_graph[room_num]:
+			copy = path[:]
+			copy.append(trav_graph[room_num][next_room])
+			s.append(copy)
+print(dfs_paths)
+
+# s = [n for n in shortest_paths[0]]
+# # s.append(shortest_paths[0])
+# # directions = ['n', 's', 'w', 'e']
+# current_room = player.current_room
+# direction_paths = {}
+# while len(s) > 0:
+# 	room_num = s.pop()
+# 	direction_path = []
+# 	# room_num = path[-1]
+# 	# if room_num == 0:
+# 		# s.append(shortest_paths[room_num + 1])
+# 		# s = [n for n in shortest_paths]
+# 		# continue
+# 	if room_num not in direction_paths:
+# 		for x in current_room.get_exits():
+# 			if x == 'n':
+# 				if room.n_to.id == room_num:
+# 					current_room = current_room.n_to
+# 					# s.append(room.n_to)
+# 					# x.append(next_room)
+# 			elif x == 's':
+# 				if room.s_to.id == room_num:
+# 					current_room = current_room.s_to
+# 					# s.append(room.s_to)
+# 					# x.append(next_room)
+# 			elif x == 'w':
+# 				if room.w_to.id == room_num:
+# 					current_room = current_room.w_to
+# 					# s.append(room.w_to)
+# 					# x.append(next_room)
+# 			elif x == 'e':
+# 				if room.e_to.id == room_num:
+# 					current_room = current_room.e_to
+					# s.append(room.e_to)
+					# x.append(next_room)
+		# direction_paths[room_num] = path
+
+#
+# x = []
+# s = []
+# # directions = []
+# # last_direction = ''
+# # current_room = player.current_room
+# s.append(shortest_paths[0])
+# # x.append('n')
+# visited = set()
+# while len(s) > 0:
+# 	room_path = s.pop()
+# 	# print(room)
+# 	# direction = x.pop()
+# 	# if (room == None):
+# 	# 	continue
+# 	if room_path not in visited:
+# 		print(room.id)
+# 		current_room = room
+# 		# if x:
+# 		# 	direction = x.pop()
+# 		visited.add(room)
+# 		# x.append()
+# 		for next_room in trav_graph[room.id]:
+# 			# print(room)
+# 			# print(next_room)
+# 			# if trav_graph[room][next_room]:
+# 			# 	x.append(next_room)
+#
+# 			if next_room == 'n':
+# 				if room.n_to:
+# 					s.append(room.n_to)
+# 					x.append(next_room)
+# 			elif next_room == 's':
+# 				if room.s_to:
+# 					s.append(room.s_to)
+# 					x.append(next_room)
+# 			elif next_room == 'w':
+# 				if room.w_to:
+# 					s.append(room.w_to)
+# 					x.append(next_room)
+# 			elif next_room == 'e':
+# 				if room.e_to:
+# 					s.append(room.e_to)
+# 					x.append(next_room)
+# #
+# 			# if next_room == 'n':
+# 			# 	s.append(room.n_to)
+# 			# elif next_room == 's':
+# 			# 	s.append(room.s_to)
+# 			# elif next_room == 'w':
+# 			# 	s.append(room.w_to)
+# 			# elif next_room == 'e':
+# 			# 	s.append(room.e_to)
+#
+# 			# print(room.next_room_attr)
+# 			# s.append(trav_graph[room.id][next_room])
+# print(x)
+
+# if next_room == 'n':
+# 	if room.n_to:
+# 		s.append(room.n_to)
+# 		x.append(next_room)
+# elif next_room == 's':
+# 	if room.s_to:
+# 		s.append(room.s_to)
+# 		x.append(next_room)
+# elif next_room == 'w':
+# 	if room.w_to:
+# 		s.append(room.w_to)
+# 		x.append(next_room)
+# elif next_room == 'e':
+# 	if room.e_to:
+# 		s.append(room.e_to)
+# 		x.append(next_room)
+
 # ---
 
 # TRAVERSAL TEST
