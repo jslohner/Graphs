@@ -79,28 +79,46 @@ class SocialGraph:
 
 		The key is the friend's ID and the value is the path.
 		"""
-		visited = {}  # Note that this is a dictionary, not a set
-		# !!!! IMPLEMENT ME
-		for u in self.users:
-			if self.friendships[u]:
-				q = Queue()
-				q.enqueue([user_id])
-				while q.size() > 0:
-					p = q.dequeue()
-					next = p[-1]
-					if u not in visited:
-						if next == u:
-							visited[u] = p
-						for f in self.friendships[next]:
-							copy = p[:]
-							copy.append(f)
-							q.enqueue(copy)
+		# visited = {}  # Note that this is a dictionary, not a set
+		# # !!!! IMPLEMENT ME
+
+		# my original solution
+		# for u in self.users:
+		# 	if self.friendships[u]:
+		# 		q = Queue()
+		# 		q.enqueue([user_id])
+		# 		while q.size() > 0:
+		# 			p = q.dequeue()
+		# 			next = p[-1]
+		# 			if u not in visited:
+		# 				if next == u:
+		# 					visited[u] = p
+		# 				for f in self.friendships[next]:
+		# 					copy = p[:]
+		# 					copy.append(f)
+		# 					q.enqueue(copy)
+
+		# solution from lecture (much better)
+		visited = {}
+		q = Queue()
+		q.enqueue([user_id])
+		while q.size() > 0:
+			path = q.dequeue()
+			newuser_id = path[-1]
+			if newuser_id not in visited:
+				visited[newuser_id] = path
+				for friend_id in self.friendships[newuser_id]:
+					if friend_id not in visited:
+						new_path = list(path)
+						new_path.append(friend_id)
+						q.enqueue(new_path)
+
 		return visited
 
 
 if __name__ == '__main__':
 	sg = SocialGraph()
-	sg.populate_graph(100, 5)
+	sg.populate_graph(1000, 5)
 	print(sg.friendships)
 	# print((len(sg.friendships[1]) / len(sg.users)) * 100)
 	connections = sg.get_all_social_paths(1)
