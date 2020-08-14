@@ -38,187 +38,109 @@ for room in world.rooms:
 		'w': world.rooms[room].w_to.id if world.rooms[room].w_to else None,
 		'e': world.rooms[room].e_to.id if world.rooms[room].e_to else None
 	}
-print(trav_graph)
-# ---
-q = []
-# q.append([world.starting_room])
-q.append([(world.starting_room.id, 'start')])
-shortest_paths = {}
-while len(q) > 0:
-	p = q.pop(0)
-	room = p[-1][0]
-	if (room == None):
-		continue
-	if room not in shortest_paths:
-		shortest_paths[room] = p
-		for next_room in trav_graph[room]:
-			if next_room not in shortest_paths:
-				copy = p[:]
-				copy.append((trav_graph[room][next_room], next_room))
-				q.append(copy)
-print(shortest_paths)
-
-# x = [{1: 't'}, {2: 'bingus'}, {}]
-# print(x[-1].items())
-
-# visited = {}
-# q = Queue()
-# q.enqueue([user_id])
-# while q.size() > 0:
-# 	path = q.dequeue()
-# 	newuser_id = path[-1]
-# 	if newuser_id not in visited:
-# 		visited[newuser_id] = path
-# 		for friend_id in self.friendships[newuser_id]:
-# 			if friend_id not in visited:
-# 				new_path = list(path)
-# 				new_path.append(friend_id)
-# 				q.enqueue(new_path)
-# ---
 opp = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
-direction_paths = {}
-for key in shortest_paths:
-	direction_paths[key] = [x[1] for x in shortest_paths[key]]
-print(direction_paths)
-
-for value in direction_paths.values():
-	path_back = []
-	for direction in value:
-		if direction != 'start':
-			traversal_path.append(direction)
-			path_back.insert(0, opp[direction])
-	traversal_path.extend(path_back)
-
-s = []
-s.append([0])
-dfs_paths = {}
-while len(s) > 0:
-	path = s.pop()
-	room_num = path[-1]
-	if room_num not in dfs_paths:
-		if (room_num == None):
-			continue
-		dfs_paths[room_num] = path
-		# print(room_num)
-		for next_room in trav_graph[room_num]:
-			copy = path[:]
-			copy.append(trav_graph[room_num][next_room])
-			s.append(copy)
-print(dfs_paths)
-
-# s = [n for n in shortest_paths[0]]
-# # s.append(shortest_paths[0])
-# # directions = ['n', 's', 'w', 'e']
-# current_room = player.current_room
-# direction_paths = {}
-# while len(s) > 0:
-# 	room_num = s.pop()
-# 	direction_path = []
-# 	# room_num = path[-1]
-# 	# if room_num == 0:
-# 		# s.append(shortest_paths[room_num + 1])
-# 		# s = [n for n in shortest_paths]
-# 		# continue
-# 	if room_num not in direction_paths:
-# 		for x in current_room.get_exits():
-# 			if x == 'n':
-# 				if room.n_to.id == room_num:
-# 					current_room = current_room.n_to
-# 					# s.append(room.n_to)
-# 					# x.append(next_room)
-# 			elif x == 's':
-# 				if room.s_to.id == room_num:
-# 					current_room = current_room.s_to
-# 					# s.append(room.s_to)
-# 					# x.append(next_room)
-# 			elif x == 'w':
-# 				if room.w_to.id == room_num:
-# 					current_room = current_room.w_to
-# 					# s.append(room.w_to)
-# 					# x.append(next_room)
-# 			elif x == 'e':
-# 				if room.e_to.id == room_num:
-# 					current_room = current_room.e_to
-					# s.append(room.e_to)
-					# x.append(next_room)
-		# direction_paths[room_num] = path
-
-#
-# x = []
-# s = []
-# # directions = []
-# # last_direction = ''
-# # current_room = player.current_room
-# s.append(shortest_paths[0])
-# # x.append('n')
-# visited = set()
-# while len(s) > 0:
-# 	room_path = s.pop()
-# 	# print(room)
-# 	# direction = x.pop()
-# 	# if (room == None):
-# 	# 	continue
-# 	if room_path not in visited:
-# 		print(room.id)
-# 		current_room = room
-# 		# if x:
-# 		# 	direction = x.pop()
-# 		visited.add(room)
-# 		# x.append()
-# 		for next_room in trav_graph[room.id]:
-# 			# print(room)
-# 			# print(next_room)
-# 			# if trav_graph[room][next_room]:
-# 			# 	x.append(next_room)
-#
-# 			if next_room == 'n':
-# 				if room.n_to:
-# 					s.append(room.n_to)
-# 					x.append(next_room)
-# 			elif next_room == 's':
-# 				if room.s_to:
-# 					s.append(room.s_to)
-# 					x.append(next_room)
-# 			elif next_room == 'w':
-# 				if room.w_to:
-# 					s.append(room.w_to)
-# 					x.append(next_room)
-# 			elif next_room == 'e':
-# 				if room.e_to:
-# 					s.append(room.e_to)
-# 					x.append(next_room)
-# #
-# 			# if next_room == 'n':
-# 			# 	s.append(room.n_to)
-# 			# elif next_room == 's':
-# 			# 	s.append(room.s_to)
-# 			# elif next_room == 'w':
-# 			# 	s.append(room.w_to)
-# 			# elif next_room == 'e':
-# 			# 	s.append(room.e_to)
-#
-# 			# print(room.next_room_attr)
-# 			# s.append(trav_graph[room.id][next_room])
-# print(x)
-
-# if next_room == 'n':
-# 	if room.n_to:
-# 		s.append(room.n_to)
-# 		x.append(next_room)
-# elif next_room == 's':
-# 	if room.s_to:
-# 		s.append(room.s_to)
-# 		x.append(next_room)
-# elif next_room == 'w':
-# 	if room.w_to:
-# 		s.append(room.w_to)
-# 		x.append(next_room)
-# elif next_room == 'e':
-# 	if room.e_to:
-# 		s.append(room.e_to)
-# 		x.append(next_room)
-
+# print(trav_graph)
 # ---
+v = {room:False for room in world.rooms}
+def dfs(room_id):
+	v[room_id] = True
+	for direction in 'nswe':
+		if trav_graph[room_id][direction] and not v[trav_graph[room_id][direction]]:
+			traversal_path.append(direction)
+			dfs(trav_graph[room_id][direction])
+			traversal_path.append(opp[direction])
+dfs(0)
+# ---
+# q = []
+# # q.append([world.starting_room])
+# q.append([(world.starting_room.id, 'start')])
+# shortest_paths = {}
+# while len(q) > 0:
+# 	p = q.pop(0)
+# 	room = p[-1][0]
+# 	if (room == None):
+# 		continue
+# 	if room not in shortest_paths:
+# 		shortest_paths[room] = p
+# 		for next_room in trav_graph[room]:
+# 			if next_room not in shortest_paths:
+# 				copy = p[:]
+# 				copy.append((trav_graph[room][next_room], next_room))
+# 				q.append(copy)
+# # ---
+# direction_paths = {}
+# num_paths = {}
+# for key in shortest_paths:
+# 	direction_paths[key] = [x[1] for x in shortest_paths[key]]
+# 	num_paths[key] = [x[0] for x in shortest_paths[key]]
+#
+# bfs_paths = {}
+# for key in shortest_paths:
+# 	path = [t[0] for t in shortest_paths[key]]
+# 	bfs_paths[key] = path
+#
+# for key in bfs_paths:
+# 	for room_num in bfs_paths[key]:
+# 		if room_num != key:
+# 			if room_num in direction_paths:
+# 				del direction_paths[room_num]
+#
+# possible_connections = {}
+# connections = {}
+# for key in direction_paths:
+# 	if len(world.rooms[key].get_exits()) > 1:
+# 		possible_connections[key] = [x for x in trav_graph[key].values()]
+#
+# for key in possible_connections:
+# 	for room in possible_connections[key]:
+# 		if room in possible_connections:
+# 			if (key not in connections) and (room not in connections):
+# 				connections[key] = room
+#
+# for key in connections:
+# 	new_path = []
+# 	for d in direction_paths[connections[key]]:
+# 		if d != 'start':
+# 			new_path.insert(0, opp[d])
+#
+# 	room = world.rooms[key]
+# 	for exit in room.get_exits():
+# 		if exit == 'n':
+# 			if room.n_to.id == connections[key]:
+# 				new_path.insert(0, 'n')
+# 		elif exit == 's':
+# 			if room.s_to.id == connections[key]:
+# 				new_path.insert(0, 's')
+# 		elif exit == 'w':
+# 			if room.w_to.id == connections[key]:
+# 				new_path.insert(0, 'w')
+# 		elif exit == 'e':
+# 			if room.e_to.id == connections[key]:
+# 				new_path.insert(0, 'e')
+#
+# 	direction_paths[key].extend(new_path)
+# 	del direction_paths[connections[key]]
+#
+# # explored = {i:False for i in range(0, len(world.rooms))}
+# # for key in direction_paths:
+# # 	for direction in direction_paths[key]:
+# # 		if direction != 'start':
+# # 			player.travel(direction)
+# # 			print(player.current_room.id)
+# # 	for direction in reversed(direction_paths[key]):
+# # 		if direction != 'start':
+# # 			player.travel(opp[direction])
+# # 			print(player.current_room.id)
+#
+# for key in direction_paths:
+# 	path_back = []
+# 	for direction in direction_paths[key]:
+# 		if direction != 'start':
+# 			traversal_path.append(direction)
+# 			path_back.insert(0, opp[direction])
+# 	if key not in connections:
+# 		traversal_path.extend(path_back)
+# # ---
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -226,6 +148,7 @@ player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
 for move in traversal_path:
+	# print(player.current_room.id)
 	player.travel(move)
 	visited_rooms.add(player.current_room)
 
